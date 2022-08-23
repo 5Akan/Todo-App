@@ -2,6 +2,8 @@ const form = document.getElementById('form');
 const input = document.getElementById('input');
 const todoul = document.getElementById('todolist');
 
+
+
 form.addEventListener('submit', (e) =>{
     e.preventDefault();
    
@@ -30,20 +32,25 @@ function addTodos(params) {
             todoli.remove();
         })
 
-        input.value = '';
         todoul.appendChild(todoli);
+        input.value = '';
+
+        updateLS();
    }
+   
 }
 
-function updateLS(params) {
-    
-    const notesEl = document.querySelectorAll('li');
+function updateLS() {
+    const todoEl = document.querySelectorAll('li');
 
-    const notes = [];
+    const todos = [];
 
-    notesEl.forEach((notesEl) =>{
-        notes.push({
-            text : notesEl.innerText
+    todoEl.forEach((todoEl) =>{
+        todos.push({
+            text: todoEl.innerText,
+            completed: todoEl.classList.contains('completed'),
         })
     })
+
+    localStorage.setItem('todos',JSON.stringify(todos));
 }
