@@ -2,6 +2,13 @@ const form = document.getElementById('form');
 const input = document.getElementById('input');
 const todoul = document.getElementById('todolist');
 
+const todos = JSON.parse(localStorage.getItem('todos'));
+
+if (todos) {
+    todos.forEach(todo => {
+        addTodos(todo);
+    })
+}
 
 
 form.addEventListener('submit', (e) =>{
@@ -11,17 +18,27 @@ form.addEventListener('submit', (e) =>{
         
 });
 
-function addTodos(params) {
+function addTodos(todo) {
     
-    const todo = input.value;
+    let todoText = input.value;
 
-   if(todo){
+    if(todo){
+        todoText = todo.text;
+    }
+
+   if(todoText){
        const todoli = document.createElement('li');
-        todoli.innerText = todo;
-       
 
+       
+    if(todo && todo.completed){
+        todoli.classList.add('completed');
+       }
+
+        todoli.innerText = todoText;
+       
         todoli.addEventListener('click', () => {
             todoli.classList.toggle('completed');
+            updateLS();
         });
 
         /**This 'contextmenu' simply makes you use 
@@ -30,6 +47,7 @@ function addTodos(params) {
             e.preventDefault();
 
             todoli.remove();
+            updateLS();
         })
 
         todoul.appendChild(todoli);
